@@ -9,10 +9,13 @@ python:
 - pypy3
 install:
 - pip install coveralls
+- pip install codecov
 - pip install pep8
 script:
 - coverage run --source=osmoapi setup.py test
-after_success: coveralls
+after_success:
+- coveralls
+- codecov
 notifications:
   email:
   - christian.ledermann@gmail.com

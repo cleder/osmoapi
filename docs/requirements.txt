@@ -1,0 +1,2 @@
+pygeoif==0.6
+requests-oauthlib==0.6.1

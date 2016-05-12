@@ -12,3 +12,9 @@
 .*.swp
 .DS_Store
 .*
+_build
+_static
+_templates
+__pycache__
+.*
+setup.cfg
