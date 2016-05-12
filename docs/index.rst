@@ -6,6 +6,12 @@
 Welcome to OsmOApi's documentation!
 ===================================
 
+OsmOApi is short for OpenStreetMap_ OAuth_ API.
+
+The authorization is not in the scope of this package, you can use python-social-auth_ for this
+
+It takes a geo_interface_ compatible dictionary to create OSM Features.
+
 Contents:
 
 .. toctree::
@@ -21,3 +27,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. _python-social-auth: https://pypi.python.org/pypi/python-social-auth
+.. _geo_interface: https://gist.github.com/2217756
+.. _OpenStreetMap: https://www.openstreetmap.org/
+.. _OAuth: http://oauth.net/

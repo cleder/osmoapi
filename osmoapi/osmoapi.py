@@ -32,7 +32,7 @@ class _OsmBaseObject(object):
 class OsmChange(_OsmBaseObject):
 
     """
-    OsmChange
+    **OsmChange.**
 
     http://wiki.openstreetmap.org/wiki/OsmChange
 
@@ -53,7 +53,7 @@ class OsmChange(_OsmBaseObject):
 
     def create_node(self, point, **kwargs):
         """
-        Create a Node.
+        **Create a Node.**
 
         http://wiki.openstreetmap.org/wiki/Node
 
@@ -77,7 +77,7 @@ class OsmChange(_OsmBaseObject):
 
     def create_way(self, linestring, **kwargs):
         """
-        Create a Way
+        **Create a Way.**
 
         http://wiki.openstreetmap.org/wiki/Way
 
@@ -105,7 +105,7 @@ class OsmChange(_OsmBaseObject):
 
     def create_multipolygon(self, multipolygon, **kwargs):
         """
-        Create a Relation:multipolygon
+        **Create a Relation:multipolygon.**
 
         http://wiki.openstreetmap.org/wiki/Relation:multipolygon
 
@@ -177,7 +177,7 @@ class OsmChange(_OsmBaseObject):
 class ChangeSet(_OsmBaseObject):
 
     """
-    Changesets.
+    **Changesets.**
 
     http://wiki.openstreetmap.org/wiki/API_v0.6#Changesets_2
 
@@ -236,7 +236,7 @@ class OSMOAuthAPI(object):
 
     def create_changeset(self, created_by, comment, **kwargs):
         """
-        Create: PUT /api/0.6/changeset/create.
+        **Create: PUT /api/0.6/changeset/create.**
 
         http://wiki.openstreetmap.org/wiki/API_v0.6#Create:_PUT_.2Fapi.2F0.6.2Fchangeset.2Fcreate
 
@@ -264,7 +264,7 @@ class OSMOAuthAPI(object):
 
     def close_changeset(self, changeset):
         """
-        Close: PUT /api/0.6/changeset/#id/close
+        **Close: PUT /api/0.6/changeset/#id/close.**
 
         http://wiki.openstreetmap.org/wiki/API_v0.6#Close:_PUT_.2Fapi.2F0.6.2Fchangeset.2F.23id.2Fclose
 
@@ -292,7 +292,7 @@ class OSMOAuthAPI(object):
 
     def diff_upload(self, change):
         """
-        Diff upload: POST /api/0.6/changeset/#id/upload
+        **Diff upload: POST /api/0.6/changeset/#id/upload.**
 
         http://wiki.openstreetmap.org/wiki/API_v0.6#Diff_upload:_POST_.2Fapi.2F0.6.2Fchangeset.2F.23id.2Fupload
 
