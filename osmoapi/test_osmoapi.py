@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+import mock
+
 from pygeoif import geometry
 
 from . import osmoapi
@@ -78,3 +80,87 @@ class ChangeSetTest(unittest.TestCase):
         assert 'k="comment"' in changeset.to_string()
         assert 'v="me"' in changeset.to_string()
         assert 'v="A Comment"' in changeset.to_string()
+
+
+class OSMOAuthAPITest(unittest.TestCase):
+
+    def test_url(self):
+        api = osmoapi.OSMOAuthAPI('client_key', 'client_secret',
+                                  'resource_owner_key',
+                                  'resource_owner_secret', test=True)
+        assert api.url == osmoapi.TEST_API_URL
+        api = osmoapi.OSMOAuthAPI('client_key', 'client_secret',
+                                  'resource_owner_key',
+                                  'resource_owner_secret', test=False)
+        assert api.url == osmoapi.LIVE_API_URL
+
+    def test_create_changeset_ok(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 200
+        response_mock.text = '1234'
+        session_mock.put.return_value = response_mock
+        api.session = session_mock
+        cs = api.create_changeset('me', 'A Comment')
+        assert cs.id == 1234
+
+    def test_create_changeset_fail(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 500
+        response_mock.text = '1234'
+        response_mock.raise_for_status.return_value = 0
+        session_mock.put.return_value = response_mock
+        api.session = session_mock
+        api.create_changeset('me', 'A Comment')
+        assert response_mock.raise_for_status.call_count == 1
+
+    def test_close_changeset_ok(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 200
+        response_mock.text = '1234'
+        session_mock.put.return_value = response_mock
+        api.session = session_mock
+        cs_mock = mock.Mock()
+        assert api.close_changeset(cs_mock)
+
+    def test_close_changeset_fail(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 500
+        response_mock.text = '1234'
+        response_mock.raise_for_status.return_value = 0
+        session_mock.put.return_value = response_mock
+        api.session = session_mock
+        cs_mock = mock.Mock()
+        api.close_changeset(cs_mock)
+        assert response_mock.raise_for_status.call_count == 1
+
+    def test_diff_upload_ok(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 200
+        response_mock.text = '1234'
+        session_mock.post.return_value = response_mock
+        api.session = session_mock
+        cs_mock = mock.Mock()
+        assert api.diff_upload(cs_mock) == '1234'
+
+    def test_diff_upload_fail(self):
+        api = osmoapi.OSMOAuthAPI('ck', 'cs', 'rok', 'ros')
+        session_mock = mock.Mock()
+        response_mock = mock.Mock()
+        response_mock.status_code = 500
+        response_mock.text = '1234'
+        response_mock.raise_for_status.return_value = 0
+        session_mock.post.return_value = response_mock
+        api.session = session_mock
+        cs_mock = mock.Mock()
+        api.diff_upload(cs_mock)
+        assert response_mock.raise_for_status.call_count == 1

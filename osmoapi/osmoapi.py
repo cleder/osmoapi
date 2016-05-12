@@ -261,6 +261,8 @@ class OSMOAuthAPI(object):
         if response.status_code == 200:
             changeset.id = int(response.text)
             return changeset
+        else:
+            response.raise_for_status()
 
     def close_changeset(self, changeset):
         """
