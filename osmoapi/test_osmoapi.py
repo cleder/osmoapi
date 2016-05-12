@@ -62,7 +62,6 @@ class OsmChangeTest(unittest.TestCase):
         changeset = osmoapi.ChangeSet(id=6)
         change = osmoapi.OsmChange(changeset)
         change.create_multipolygon(mp)
-        print change.to_string()
         assert '<relation changeset="6" id="-18">' in change.to_string()
         assert '<tag k="type" v="multipolygon" />' in change.to_string()
         assert '<member ref="-5" role="outer" type="way" />' in change.to_string()
