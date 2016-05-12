@@ -7,8 +7,8 @@ import requests
 import pygeoif
 from requests_oauthlib import OAuth1Session
 
-API_URL = 'http://api06.dev.openstreetmap.org/'
-
+TEST_API_URL = 'http://api06.dev.openstreetmap.org/'
+LIVE_API_URL = 'http://api.openstreetmap.org/'
 
 class OsmChange(object):
 
@@ -153,16 +153,19 @@ class OSMOAuthAPI(object):
     """OSM API with OAuth."""
 
     def __init__(self, client_key, client_secret, resource_owner_key,
-                 resource_owner_secret,
-                 test=True):
+                 resource_owner_secret, test=True):
         self.session = OAuth1Session(
             client_key,
             client_secret=client_secret,
             resource_owner_key=resource_owner_key,
             resource_owner_secret=resource_owner_secret)
+        if test:
+            self.url = TEST_API_URL
+        else:
+            self.url = LIVE_API_URL
 
     def create_changeset(self, created_by, comment):
-        url = '{0}api/0.6/changeset/create'.format(API_URL)
+        url = '{0}api/0.6/changeset/create'.format(self.url)
         changeset = ChangeSet(created_by=created_by, comment=comment)
         response = self.session.put(url, data=changeset.to_string())
         if response.status_code == 200:
@@ -170,7 +173,7 @@ class OSMOAuthAPI(object):
             return changeset
 
     def close_changeset(self, changeset):
-        url = '{0}api/0.6/changeset/{1}/close'.format(API_URL, changeset.id)
+        url = '{0}api/0.6/changeset/{1}/close'.format(self.url, changeset.id)
         response = self.session.put(url)
         if response.status_code == 200:
             return True
@@ -179,7 +182,7 @@ class OSMOAuthAPI(object):
 
     def diff_upload(self, change):
         """Diff upload: POST /api/0.6/changeset/#id/upload"""
-        url = '{0}api/0.6/changeset/{1}/upload'.format(API_URL,
+        url = '{0}api/0.6/changeset/{1}/upload'.format(self.url,
                                                        change.changeset.id)
         response = self.session.post(url, data=change.to_string())
         if response.status_code == 200:

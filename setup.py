@@ -38,7 +38,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Operating System :: OS Independent',
     ],
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
