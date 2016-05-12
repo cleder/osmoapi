@@ -1,0 +1,19 @@
+language: python
+sudo: false
+python:
+- '3.5'
+- '3.3'
+- '3.4'
+- '2.7'
+- pypy
+- pypy3
+install:
+- pip install coveralls
+- pip install pep8
+script:
+- coverage run --source=osmoapi setup.py test
+after_success: coveralls
+notifications:
+  email:
+  - christian.ledermann@gmail.com
+

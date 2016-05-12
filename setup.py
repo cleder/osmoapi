@@ -53,7 +53,6 @@ setup(
     install_requires=[
         # -*- Extra requirements: -*-
         'pygeoif',
-        'requests',
         'requests_oauthlib',
     ],
     entry_points="""
