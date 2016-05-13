@@ -122,7 +122,7 @@ class OsmChange(_OsmBaseObject):
         assert multipolygon['type'] == 'MultiPolygon' or multipolygon['type'] == 'Polygon'
         assert multipolygon['coordinates']
         if multipolygon['type'] == 'Polygon':
-            polygons = [pygeoif.Polygon(multipolygon), ]
+            polygons = [pygeoif.Polygon(pygeoif.as_shape(multipolygon)), ]
         else:
             polygons = []
             for coords in multipolygon['coordinates']:

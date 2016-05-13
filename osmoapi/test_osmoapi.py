@@ -69,6 +69,16 @@ class OsmChangeTest(unittest.TestCase):
         assert '<member ref="-5" role="outer" type="way" />' in change.to_string()
         assert '<member ref="-17" role="inner" type="way" />' in change.to_string()
 
+    def test_create_polygon(self):
+        poly = geometry.Polygon([(0, 0), (1, 1), (1, 0), (0, 0)])
+        changeset = osmoapi.ChangeSet(id=7)
+        change = osmoapi.OsmChange(changeset)
+        change.create_multipolygon(poly)
+        assert '<node changeset="7" id="-1" lat="0.0" lon="0.0" />' in change.to_string()
+        assert '<tag k="type" v="multipolygon" />' in change.to_string()
+        assert '<member ref="-5" role="outer" type="way" />' in change.to_string()
+        assert 'role="inner"' not in change.to_string()
+
 
 class ChangeSetTest(unittest.TestCase):
 
