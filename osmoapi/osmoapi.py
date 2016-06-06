@@ -224,6 +224,10 @@ class OSMOAuthAPI(object):
         to authenticate to OpenStreetMap, and the test parameter
         to decide if to run on the test or live server
         """
+        assert client_key
+        assert client_secret
+        assert resource_owner_key
+        assert resource_owner_secret
         self.session = OAuth1Session(
             client_key,
             client_secret=client_secret,
@@ -335,4 +339,41 @@ class OSMOAuthAPI(object):
         if response.status_code == 200:
             return response.text
         else:
+            response.raise_for_status()
+
+    def create_note(self, point, text):
+        """
+        **Create a new note: Create: POST /api/0.6/notes**
+
+        http://wiki.openstreetmap.org/wiki/API_v0.6#Create_a_new_note:_Create:_POST_.2Fapi.2F0.6.2Fnotes
+
+        URL: http://api.openstreetmap.org/api/0.6/notes?lat=51.00&lon=0.1&text=ThisIsANote
+        Return type: application/xml
+
+        | Parameter  | Description | Allowed values |
+        ---------------------------------------------
+        |lat | Specifies the latitude of the bug  | floatingpoint number in degrees |
+        |lon | Specifies the longitude of the bug | floatingpoint number in degrees |
+        |text  |  A text field with arbitrary text containing the note |
+
+        If the request is made as an authenticated user, the note is associated to that user account.
+
+        Error codes
+        HTTP status code 400 (Bad Request)
+        if the text field was not present
+        HTTP status code 405 (Method Not Allowed)
+        If the request is not a HTTP POST request
+        HTTP status code 403
+        If the user did not authorize your application to create/edit notes.
+        """
+        if not isinstance(point, dict):
+            point = point.__geo_interface__
+        assert point['type'] == 'Point'
+        assert point['coordinates']
+        lon = str(point['coordinates'][0])
+        lat = str(point['coordinates'][1])
+        params=dict(lat=lat, lon=lon, text=text)
+        url = '{0}api/0.6/notes'.format(self.url)
+        response = self.session.post(url, params=params)
+        if response.status_code != 200:
             response.raise_for_status()
