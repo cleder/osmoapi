@@ -48,6 +48,14 @@ class OsmChangeTest(unittest.TestCase):
         assert '<node changeset="4" id="-2" lat="1.0" lon="1.0" />' in change.to_string()
         assert '<way changeset="4" id="-3"><nd ref="-1" /><nd ref="-2" /></way>' in change.to_string()
 
+    def test_create_closed_way(self):
+        linestr =  geometry.LineString([(0, 0), (1, 1), (1, 0), (0, 0)])
+        changeset = osmoapi.ChangeSet(id=4)
+        change = osmoapi.OsmChange(changeset)
+        change.create_way(linestr)
+        assert change.ways[0]['nodes'][0] == change.ways[0]['nodes'][-1]
+        assert len(change.ways[0]['nodes']) == 4
+        
     def test_create_way_with_tags(self):
         linestr = geometry.LineString([(0, 0), (1, 1)])
         changeset = osmoapi.ChangeSet(id=5)
@@ -64,10 +72,10 @@ class OsmChangeTest(unittest.TestCase):
         changeset = osmoapi.ChangeSet(id=6)
         change = osmoapi.OsmChange(changeset)
         change.create_multipolygon(mp)
-        assert '<relation changeset="6" id="-18">' in change.to_string()
+        assert '<relation changeset="6" id="-15">' in change.to_string()
         assert '<tag k="type" v="multipolygon" />' in change.to_string()
-        assert '<member ref="-5" role="outer" type="way" />' in change.to_string()
-        assert '<member ref="-17" role="inner" type="way" />' in change.to_string()
+        assert '<member ref="-4" role="outer" type="way" />' in change.to_string()
+        assert '<member ref="-14" role="inner" type="way" />' in change.to_string()
 
     def test_create_polygon(self):
         poly = geometry.Polygon([(0, 0), (1, 1), (1, 0), (0, 0)])
@@ -76,7 +84,7 @@ class OsmChangeTest(unittest.TestCase):
         change.create_multipolygon(poly)
         assert '<node changeset="7" id="-1" lat="0.0" lon="0.0" />' in change.to_string()
         assert '<tag k="type" v="multipolygon" />' in change.to_string()
-        assert '<member ref="-5" role="outer" type="way" />' in change.to_string()
+        assert '<member ref="-4" role="outer" type="way" />' in change.to_string()
         assert 'role="inner"' not in change.to_string()
 
 

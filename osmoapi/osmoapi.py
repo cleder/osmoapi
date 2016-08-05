@@ -93,10 +93,17 @@ class OsmChange(_OsmBaseObject):
         assert linestring['type'] == 'LineString' or linestring['type'] == 'LinearRing'
         assert linestring['coordinates']
         nodes = []
-        for point in (pygeoif.Point(coord)
-                      for coord in linestring['coordinates']):
+        if linestring['coordinates'][0] == linestring['coordinates'][-1]:
+            coords = linestring['coordinates'][:-1]
+            is_closed = True
+        else:
+            coords = linestring['coordinates']
+            is_closed = False
+        for point in (pygeoif.Point(coord) for coord in coords):
             node = self.create_node(point)
             nodes.append(node)
+        if is_closed:
+            nodes.append(nodes[0])
         self.idx -= 1
         self.ways.append(dict(id=str(self.idx),
                               nodes=nodes,
