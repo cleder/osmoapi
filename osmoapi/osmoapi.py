@@ -357,11 +357,15 @@ class OSMOAuthAPI(object):
         URL: http://api.openstreetmap.org/api/0.6/notes?lat=51.00&lon=0.1&text=ThisIsANote
         Return type: application/xml
 
-        | Parameter  | Description | Allowed values |
-        ---------------------------------------------
-        |lat | Specifies the latitude of the bug  | floatingpoint number in degrees |
-        |lon | Specifies the longitude of the bug | floatingpoint number in degrees |
-        |text  |  A text field with arbitrary text containing the note |
+        +------------+------------------------------------+----------------------------------+
+        | Parameter  | Description                        | Allowed values                   |
+        +============+====================================+==================================+
+        |lat         | Specifies the latitude of the bug  | floatingpoint number in degrees  |
+        +------------+------------------------------------+----------------------------------+
+        |lon         | Specifies the longitude of the bug | floatingpoint number in degrees  |
+        +------------+------------------------------------+----------------------------------+
+        |text        | Text containing the note           | A text field with arbitrary text |
+        +------------+------------------------------------+----------------------------------+
 
         If the request is made as an authenticated user, the note is associated to that user account.
 
